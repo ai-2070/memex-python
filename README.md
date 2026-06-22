@@ -107,12 +107,24 @@ Everything else — command tags, JSON shape, scoring/decay math, contradiction 
 
 ## Development
 
+CI uses [uv](https://docs.astral.sh/uv/) (see `.github/workflows/`):
+
+```bash
+uv sync --all-extras
+uv run ruff check .
+uv run mypy
+uv run pytest            # 582 tests
+```
+
+Or with plain pip:
+
 ```bash
 pip install -e ".[dev]"
-pytest            # 575 tests
-ruff check .
-mypy
+pytest
 ```
+
+Releases publish to PyPI via `release.yml` (trusted publishing) on a published
+GitHub release, or manually via `workflow_dispatch`.
 
 ## License
 
