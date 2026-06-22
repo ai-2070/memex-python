@@ -1,0 +1,19 @@
+API.md
+  s_f6782c0ce8f2b4::t_ef95a41986357e 1-923
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "16f7f5af70fbd6f812a48d3cdd94f608750ba3f3",
+  "prompts": {},
+  "sessions": {
+    "s_f6782c0ce8f2b4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0140e172-5614-4602-a22b-a47579403867",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "LZL0 <12474488+LZL0@users.noreply.github.com>"
+    }
+  }
+}
