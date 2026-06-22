@@ -18,7 +18,7 @@ from .errors import InvalidTimestampError
 from .graph import GraphState
 from .intent import Intent, IntentState, apply_intent_command
 from .models import Edge, MemoryItem
-from .query import extract_timestamp, get_children, get_edges
+from .query import build_children_index, extract_timestamp
 from .reducer import apply_command
 from .task import Task, TaskState, apply_task_command
 
@@ -133,18 +133,26 @@ def export_slice(
                         memory_id_set.add(pid)
                         queue.append(pid)
 
-    # walk children down-graph
+    # walk children down-graph (one children index, not a full scan per node)
     if include_children:
+        children_index = build_children_index(mem_state)
         queue = list(memory_id_set)
         while queue:
             id_ = queue.pop()
-            for child in get_children(mem_state, id_):
+            for child in children_index.get(id_, []):
                 if child.id not in memory_id_set:
                     memory_id_set.add(child.id)
                     queue.append(child.id)
 
-    # walk aliases (both directions)
+    # walk aliases (both directions) off a one-shot ALIAS adjacency index
     if include_aliases:
+        alias_out: dict[str, list[Edge]] = {}
+        alias_in: dict[str, list[Edge]] = {}
+        for edge in mem_state.edges.values():
+            if edge.kind == "ALIAS" and edge.active:
+                alias_out.setdefault(edge.from_, []).append(edge)
+                alias_in.setdefault(edge.to, []).append(edge)
+
         queue = list(memory_id_set)
         visited: set[str] = set()
         while queue:
@@ -152,12 +160,12 @@ def export_slice(
             if id_ in visited:
                 continue
             visited.add(id_)
-            for edge in get_edges(mem_state, {"from": id_, "kind": "ALIAS", "active_only": True}):
+            for edge in alias_out.get(id_, []):
                 edge_id_set.add(edge.edge_id)
                 if edge.to not in memory_id_set:
                     memory_id_set.add(edge.to)
                     queue.append(edge.to)
-            for edge in get_edges(mem_state, {"to": id_, "kind": "ALIAS", "active_only": True}):
+            for edge in alias_in.get(id_, []):
                 edge_id_set.add(edge.edge_id)
                 if edge.from_ not in memory_id_set:
                     memory_id_set.add(edge.from_)
