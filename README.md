@@ -1,4 +1,4 @@
-# memex-python
+# MemEX Python: Epistemic Memory for AI Agents
 
 **Structured, provenance-tracked memory for AI agents — a faithful Pydantic port of [`@ai2070/memex`](https://www.npmjs.com/package/@ai2070/memex).**
 
