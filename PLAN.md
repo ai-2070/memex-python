@@ -4,7 +4,7 @@ A faithful Python/Pydantic port of [`@ai2070/memex`](https://www.npmjs.com/packa
 
 - **Source of truth:** the TypeScript library at `../memex` (v0.13.0, ~4,350 LOC source / ~10,200 LOC tests, 18 modules).
 - **PyPI/distribution name:** `memex-python` · **import name:** `memex`
-- **Status:** planning complete; decisions locked (see §3). Implementation proceeds **sequentially**.
+- **Status:** ✅ **complete.** All 8 phases shipped — 18 source modules + the `MemexStore` facade, **582 tests passing** (all 27 upstream test files ported + facade/store tests), `ruff` and `mypy --strict` both clean.
 
 ---
 

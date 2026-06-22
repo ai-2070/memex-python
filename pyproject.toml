@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "memex-python"
+version = "0.13.0"
+description = "MemEX memory layer (Pydantic port) — Multi-session continuity for AI systems"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "ai2070" }]
+keywords = ["memory", "agents", "knowledge-graph", "pydantic", "ai"]
+dependencies = ["pydantic>=2.6"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov", "ruff", "mypy"]
+fast-uuid = ["uuid-utils>=0.7"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/memex"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["src/memex"]
+plugins = ["pydantic.mypy"]
