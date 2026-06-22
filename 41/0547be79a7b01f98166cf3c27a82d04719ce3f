@@ -1,0 +1,19 @@
+.github/workflows/release.yml
+  s_910ab894672f02::t_ad9ad6df354c2b 62-69,75-80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "410547be79a7b01f98166cf3c27a82d04719ce3f",
+  "prompts": {},
+  "sessions": {
+    "s_910ab894672f02": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "61766775-0510-4a4d-ba92-65a383003dcd",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "LZL0 <12474488+LZL0@users.noreply.github.com>"
+    }
+  }
+}
