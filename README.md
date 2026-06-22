@@ -1,6 +1,6 @@
 # MemEX Python: Epistemic Memory for AI Agents
 
-**Structured, provenance-tracked memory for AI agents — a faithful Pydantic port of [`@ai2070/memex`](https://www.npmjs.com/package/@ai2070/memex).**
+**Structured, provenance-tracked memory for AI agents — a faithful Pydantic port of [`@ai2070/memex`](https://github.com/ai-2070/memex).**
 
 MemEX stores beliefs, evidence, conflicts, and updates — not just retrieved text. It separates three graphs (what is *believed* / *wanted* / *done*) and makes retrieval, contradiction, decay, and identity first-class. This is the Python implementation: every typed structure is a Pydantic v2 model, and behavior matches the TypeScript original (the full upstream test suite is ported — **575 tests**).
 
