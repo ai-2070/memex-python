@@ -664,4 +664,4 @@ Releases publish to PyPI via `release.yml` (trusted publishing) on a published G
 
 ## License
 
-Apache‑2.0 (matching upstream) — see [LICENSE](LICENSE).
+Apache‑2.0 — see [LICENSE](LICENSE).
