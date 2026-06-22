@@ -1,0 +1,36 @@
+src/memex/query.py
+  s_f6782c0ce8f2b4::t_f3bf7f2c2259cc 287-296,298
+  s_f6782c0ce8f2b4::t_2ffc34c63d2ba2 45
+  s_f6782c0ce8f2b4::t_2acfcfcc9cfdc9 437-455
+src/memex/transplant.py
+  s_f6782c0ce8f2b4::t_b56d37a2997374 136,138,142,147,149-155,163,168
+  s_f6782c0ce8f2b4::t_1809f9f833a16c 21
+tests/test_perf_equivalence.py
+  s_f6782c0ce8f2b4::t_23f7e1d1aed25b 1-307
+benchmarks/perf.py
+  s_f6782c0ce8f2b4::t_c3d02f8fddcad3 182
+  s_f6782c0ce8f2b4::t_959c228c8a17c6 1-15,17-18,20-178,180-181,183-202,204-212,214-234
+  s_f6782c0ce8f2b4::t_b08d17e68715df 16,19
+  s_f6782c0ce8f2b4::t_3eba744e5c4b1c 179,203,213
+src/memex/integrity.py
+  s_f6782c0ce8f2b4::t_4b0a1b28dee28a 309-316,328-329
+  s_f6782c0ce8f2b4::t_5ff9152eb1d240 182-192,194-195,199-201,211,215-218,222-224,226-227,229-257
+  s_f6782c0ce8f2b4::t_afe607508f1ab2 152-154,164
+  s_f6782c0ce8f2b4::t_248f958dac62f4 13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "eadcfe6bd6abc9e181f9e2ed620e0b924317a716",
+  "prompts": {},
+  "sessions": {
+    "s_f6782c0ce8f2b4": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "0140e172-5614-4602-a22b-a47579403867",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "LZL0 <12474488+LZL0@users.noreply.github.com>"
+    }
+  }
+}
