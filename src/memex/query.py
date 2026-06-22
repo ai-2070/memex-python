@@ -9,7 +9,6 @@ comparator exactly, including its stable tie-breaking.
 from __future__ import annotations
 
 import math
-from functools import cmp_to_key
 from typing import Any
 
 from pydantic import BaseModel
@@ -43,6 +42,7 @@ __all__ = [
     "get_related_items",
     "get_parents",
     "get_children",
+    "build_children_index",
     "compute_decay_multiplier",
     "compute_score",
     "get_sort_value",
@@ -284,17 +284,18 @@ def get_sort_value(item: MemoryItem, field: str) -> float:
 
 
 def _multi_sort(items: list[MemoryItem], sorts: list[SortOption]) -> list[MemoryItem]:
-    def _cmp(a: MemoryItem, b: MemoryItem) -> int:
-        for s in sorts:
-            va = get_sort_value(a, s.field)
-            vb = get_sort_value(b, s.field)
-            if va < vb:
-                return -1 if s.order == "asc" else 1
-            if va > vb:
-                return 1 if s.order == "asc" else -1
-        return 0
+    # All sort fields are numeric, so a tuple key reproduces the JS comparator
+    # exactly — negating descending fields gives the same ordering, and Python's
+    # stable sort preserves insertion order on full ties (the comparator's ``0``).
+    # This is ~4x faster than ``cmp_to_key`` (no per-comparison Python call, and
+    # ``get_sort_value`` is evaluated once per item instead of O(n log n) times).
+    def _key(item: MemoryItem) -> tuple[float, ...]:
+        return tuple(
+            get_sort_value(item, s.field) if s.order == "asc" else -get_sort_value(item, s.field)
+            for s in sorts
+        )
 
-    return sorted(items, key=cmp_to_key(_cmp))
+    return sorted(items, key=_key)
 
 
 # ---------------------------------------------------------------------------
@@ -433,3 +434,22 @@ def get_children(state: GraphState, item_id: str) -> list[MemoryItem]:
         for item in state.items.values()
         if item.parents and item_id in item.parents
     ]
+
+
+def build_children_index(state: GraphState) -> dict[str, list[MemoryItem]]:
+    """Map ``parent_id -> [child items]`` in one pass over the items.
+
+    Equivalent to calling :func:`get_children` for every id, but O(N) total
+    instead of O(N) per id — callers that walk provenance in a loop (cascade
+    retraction, transitive dependents, child-inclusive export) build this once
+    and look up O(1). Per-bucket order follows item insertion order, matching
+    ``get_children``; duplicate parent ids on a single item are de-duplicated so
+    a child still appears at most once per parent.
+    """
+    index: dict[str, list[MemoryItem]] = {}
+    for item in state.items.values():
+        if not item.parents:
+            continue
+        for pid in dict.fromkeys(item.parents):
+            index.setdefault(pid, []).append(item)
+    return index

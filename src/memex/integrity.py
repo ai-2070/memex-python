@@ -10,7 +10,7 @@ from .commands import EdgeCreate
 from .factories import create_edge
 from .graph import GraphState
 from .models import Edge, MemoryFilter, MemoryItem, MemoryLifecycleEvent, ScoredItem, ScoreWeights
-from .query import get_children, get_edges, get_scored_items
+from .query import build_children_index, get_children, get_edges, get_scored_items
 from .reducer import CommandResult, apply_command
 
 __all__ = [
@@ -149,6 +149,9 @@ def get_dependents(state: GraphState, item_id: str, transitive: bool = False) ->
     if not transitive:
         return direct
 
+    # Walk the whole dependent subtree off one children index instead of
+    # re-scanning every item per node (O(N + dependents), not O(dependents x N)).
+    children_index = build_children_index(state)
     visited: set[str] = set()
     result: list[MemoryItem] = []
     queue = list(direct)
@@ -158,7 +161,7 @@ def get_dependents(state: GraphState, item_id: str, transitive: bool = False) ->
             continue
         visited.add(item.id)
         result.append(item)
-        queue.extend(get_children(state, item.id))
+        queue.extend(children_index.get(item.id, []))
     return result
 
 
@@ -176,14 +179,26 @@ def cascade_retract(
 ) -> CascadeResult:
     """Retract an item and all transitive dependents in post-order (leaves first).
 
-    Iterative post-order DFS: cycle-safe, DAG-safe (shared children), and does
-    not consume the call stack on deep dependency chains. The root is pre-marked
-    visited so a cycle pointing back to it is ignored — it's retracted last.
+    Iterative post-order DFS over a one-shot children index: cycle-safe, DAG-safe
+    (shared children), and does not consume the call stack on deep dependency
+    chains. The root is pre-marked visited so a cycle pointing back to it is
+    ignored — it's retracted last.
+
+    The retraction itself is done in a single pass — the items dict is cloned
+    once and a reverse edge index is built lazily on the first retract — instead
+    of issuing one ``apply_command`` per dependent (each of which would re-clone
+    the whole state and re-scan every edge, making a deep cascade quadratic).
+    ``author``/``reason`` carry no information into the emitted events or state,
+    so the events produced here are byte-identical to the per-command path.
     """
+    children_index = build_children_index(state)
+
     visited: set[str] = {item_id}
     order: list[str] = []
 
-    stack: list[tuple[str, str]] = [(child.id, "enter") for child in get_children(state, item_id)]
+    stack: list[tuple[str, str]] = [
+        (child.id, "enter") for child in children_index.get(item_id, [])
+    ]
     while stack:
         frame_id, phase = stack.pop()
         if phase == "exit":
@@ -193,35 +208,53 @@ def cascade_retract(
             continue
         visited.add(frame_id)
         stack.append((frame_id, "exit"))  # processed after all children (post-order)
-        for child in get_children(state, frame_id):
+        for child in children_index.get(frame_id, []):
             if child.id not in visited:
                 stack.append((child.id, "enter"))
 
-    current = state
+    # Dependents first (post-order), then the root.
+    items = dict(state.items)
+    edges: dict[str, Edge] | None = None
+    edges_by_endpoint: dict[str, list[str]] | None = None
     all_events: list[MemoryLifecycleEvent] = []
     retracted: list[str] = []
 
-    for dep_id in order:
-        if dep_id not in current.items:
+    for rid in (*order, item_id):
+        existing = items.pop(rid, None)
+        if existing is None:
             continue
-        r = apply_command(
-            current,
-            {"type": "memory.retract", "item_id": dep_id, "author": author,
-             "reason": reason if reason is not None else f"parent {item_id} retracted"},
+        all_events.append(
+            MemoryLifecycleEvent(type="memory.retracted", item=existing, cause_type="memory.retract")
         )
-        current = r.state
-        all_events.extend(r.events)
-        retracted.append(dep_id)
+        retracted.append(rid)
+        if state.edges:
+            if edges is None:
+                edges = dict(state.edges)
+            if edges_by_endpoint is None:
+                edges_by_endpoint = {}
+                for edge_id, edge in state.edges.items():
+                    edges_by_endpoint.setdefault(edge.from_, []).append(edge_id)
+                    if edge.from_ != edge.to:
+                        edges_by_endpoint.setdefault(edge.to, []).append(edge_id)
+            incident_ids = edges_by_endpoint.get(rid)
+            if incident_ids:
+                for edge_id in incident_ids:
+                    incident_edge = edges.get(edge_id)
+                    if incident_edge is None:
+                        continue  # already removed via its other endpoint
+                    del edges[edge_id]
+                    all_events.append(
+                        MemoryLifecycleEvent(type="edge.retracted", edge=incident_edge, cause_type="memory.retract")
+                    )
 
-    if item_id in current.items:
-        r = apply_command(
-            current, {"type": "memory.retract", "item_id": item_id, "author": author, "reason": reason}
-        )
-        current = r.state
-        all_events.extend(r.events)
-        retracted.append(item_id)
+    if not retracted:
+        return CascadeResult(state, all_events, retracted)
 
-    return CascadeResult(current, all_events, retracted)
+    return CascadeResult(
+        GraphState(items, edges if edges is not None else state.edges),
+        all_events,
+        retracted,
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -273,6 +306,14 @@ def get_aliases(state: GraphState, item_id: str) -> list[MemoryItem]:
 
 
 def get_alias_group(state: GraphState, item_id: str) -> list[MemoryItem]:
+    # Index active outbound ALIAS edges once (from_ -> [to]) so the BFS does not
+    # re-scan every edge per node; per-source order matches get_edges (edge
+    # insertion order), keeping the walk deterministic.
+    alias_out: dict[str, list[str]] = {}
+    for edge in state.edges.values():
+        if edge.kind == "ALIAS" and edge.active:
+            alias_out.setdefault(edge.from_, []).append(edge.to)
+
     visited: set[str] = set()
     result: list[MemoryItem] = []
     queue = [item_id]
@@ -284,8 +325,8 @@ def get_alias_group(state: GraphState, item_id: str) -> list[MemoryItem]:
         item = state.items.get(node_id)
         if item is not None:
             result.append(item)
-        for edge in get_edges(state, {"from": node_id, "kind": "ALIAS", "active_only": True}):
-            queue.append(edge.to)
+        for to in alias_out.get(node_id, []):
+            queue.append(to)
     return result
 
 

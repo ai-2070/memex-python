@@ -8,6 +8,8 @@ MemEX stores beliefs, evidence, conflicts, and updates — not just retrieved te
 - **Pydantic-native** — models validate on construction; the discriminated-union commands *are* the schema.
 - **Wire-compatible** — command tags, enum values, and JSON keys are byte-identical to the TS library, so a Python service and a TS service can share one event log.
 
+> 📖 Full API reference: [`API.md`](API.md).
+
 ## Install
 
 ```bash
