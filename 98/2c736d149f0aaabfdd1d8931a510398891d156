@@ -1,0 +1,182 @@
+tests/test_edge_cases_v2.py
+  s_910ab894672f02::t_39900cb1306106 1-187
+tests/test_edge_cases.py
+  s_910ab894672f02::t_da2f8848a3536a 1-335
+src/memex/serialization.py
+  s_910ab894672f02::t_67a0a9b60f3606 34-36
+  s_910ab894672f02::t_483bde822d3c65 1-33,37-47
+src/memex/query.py
+  s_910ab894672f02::t_f546fa37777597 241,245
+  s_910ab894672f02::t_aade2cd9dd4906 1-240,242-244,246-435
+tests/test_bugfix_sweep.py
+  s_910ab894672f02::t_e461ac3046bbf5 1-430
+src/memex/schemas.py
+  s_910ab894672f02::t_7cf8ad90d8a8b7 1-2,6-18,22-28,30-31,37
+  s_910ab894672f02::t_d3a88d88c0e275 3-5,19-21,29,32-36,38-67
+tests/test_bugfix_and_coverage.py
+  s_910ab894672f02::t_b75c48c7c1e1ad 1-314,317-331,333-517
+  s_910ab894672f02::t_0707166d9a5cb9 315-316
+  s_910ab894672f02::t_d030af8803e4c5 332
+src/memex/_time.py
+  s_910ab894672f02::t_3b240530a057d6 1-26
+.github/workflows/release.yml
+  s_910ab894672f02::t_c32ac1832e7a7c 1-98
+tests/test_query_advanced.py
+  s_910ab894672f02::t_a93268534294da 1-174
+tests/test_graph.py
+  s_910ab894672f02::t_b5c2585ab42485 1-34
+.github/workflows/test.yml
+  s_910ab894672f02::t_f6aa9c96bfe73a 1-38
+src/memex/graph.py
+  s_910ab894672f02::t_f7140dcbd6c3ca 1-30
+src/memex/task.py
+  s_910ab894672f02::t_47802132655659 1-361
+tests/test_bugfix_bulk_retract_cascade.py
+  s_910ab894672f02::t_dd02e5188d6772 1-85
+tests/test_intent.py
+  s_910ab894672f02::t_d377453b687799 1-188
+src/memex/stats.py
+  s_910ab894672f02::t_269950d166a366 1-71
+tests/test_setup.py
+  s_910ab894672f02::t_aa0e45115b2033 1-7
+tests/test_bulk.py
+  s_910ab894672f02::t_f30ce08984417a 1-161
+tests/test_retrieval.py
+  s_910ab894672f02::t_ff3f64f631726a 1-420
+README.md
+  s_910ab894672f02::t_f1d05085bbdb91 1-119
+src/memex/integrity.py
+  s_910ab894672f02::t_a752fd6daf2c56 1-316
+src/memex/bulk.py
+  s_910ab894672f02::t_d8fb08be7a9f83 1-78,81-83,85-138
+  s_910ab894672f02::t_36e6dddb7a4a17 79-80,84
+tests/test_bugfix_regressions.py
+  s_910ab894672f02::t_b0e433c6b02184 1-252
+src/memex/retrieval.py
+  s_910ab894672f02::t_e0c0bb7055a6b8 14
+  s_910ab894672f02::t_e3e8fbb4ca0683 1-13,15-111,114-116,118-120,122-266
+  s_910ab894672f02::t_6b00362de6b87a 112
+  s_910ab894672f02::t_2adfa4ce9fbef1 113,117,121
+tests/test_envelope.py
+  s_910ab894672f02::t_2c6964fb29ce30 1-73
+tests/test_replay.py
+  s_910ab894672f02::t_3eaf57aa6117ed 1-89
+src/memex/commands.py
+  s_910ab894672f02::t_66824429033b05 1-75
+tests/test_serialization.py
+  s_910ab894672f02::t_865a40facf5ef0 1-107
+tests/test_task.py
+  s_910ab894672f02::t_84638a4d569f0c 1-218
+tests/test_stats.py
+  s_910ab894672f02::t_874869c96d54f5 1-80
+src/memex/reducer.py
+  s_910ab894672f02::t_e4c9e76ae7d01b 1-151
+tests/test_transplant.py
+  s_910ab894672f02::t_674778a376d7ac 1-339
+tests/test_integrity.py
+  s_910ab894672f02::t_b3431f2c98f286 1-265
+tests/test_types.py
+  s_910ab894672f02::t_b6acc00c7a54cc 1-161
+tests/test_bugfix_surface_contradictions_dedup.py
+  s_910ab894672f02::t_95f29e936a5ff9 1-83
+src/memex/__init__.py
+  s_910ab894672f02::t_ed0bdd8ba0fbdf 1-9,17-37,71-73,75-88,90-96,167-175,290-336
+  s_910ab894672f02::t_9614f8fa3be011 97-110,112
+  s_910ab894672f02::t_eae0e794625648 288-289
+  s_910ab894672f02::t_6a0482ce18dd68 244-278
+  s_910ab894672f02::t_2d7fd0ee7cc36c 38-51,111,119-127,135
+  s_910ab894672f02::t_a722d3e8d20903 137
+  s_910ab894672f02::t_36a25e31e7f1cb 279-287
+  s_910ab894672f02::t_3f8ed7be825c9c 52,157-166
+  s_910ab894672f02::t_f61444448aad8d 74
+  s_910ab894672f02::t_1b4fb8ce0cf285 138-156
+  s_910ab894672f02::t_cede0601c8e61d 113-118,128-134,136
+  s_910ab894672f02::t_70cbc9d63f47c3 176-194
+  s_910ab894672f02::t_036f9611d8ebc7 195-217
+  s_910ab894672f02::t_b887748987beab 10-16
+  s_910ab894672f02::t_9b668cdf5f506d 218-243
+  s_910ab894672f02::t_da7ff5c0da41fc 53-70
+tests/test_phase1_foundation.py
+  s_910ab894672f02::t_a127d58fe87138 5-6
+  s_910ab894672f02::t_dcb9cbbc9a3d0e 1-4,7-134,136-141
+  s_910ab894672f02::t_f3c650c7bf662d 135
+tests/test_query.py
+  s_910ab894672f02::t_aa97325cf067c1 1-424
+src/memex/replay.py
+  s_910ab894672f02::t_c243e22bcf4b63 10,22-25
+  s_910ab894672f02::t_232f2609fae736 1-9,11,13-21,26-107,112-113,117-144
+  s_910ab894672f02::t_103a12238e8115 114
+  s_910ab894672f02::t_43700331d5294e 108-111,115-116
+  s_910ab894672f02::t_ddc886ecdb3843 12
+src/memex/envelope.py
+  s_910ab894672f02::t_afe3a9587cc49e 1-69
+src/memex/store.py
+  s_910ab894672f02::t_3f3e05a397729c 16
+  s_910ab894672f02::t_4dcee337b8431b 1-15,17-18,20-25,27,40-91,93-106,108-109,111-115,117-140,142-143,145-171,173-186,188-204,206-222
+  s_910ab894672f02::t_71e849ca8f1cca 172
+  s_910ab894672f02::t_8b7525ad74549e 92
+  s_910ab894672f02::t_c4a686c2bf17a2 107,110,116
+  s_910ab894672f02::t_6cd593619eb66f 141,144
+  s_910ab894672f02::t_854ba97c280d68 19,26,28-39
+  s_910ab894672f02::t_aa2e142e395ae8 187
+  s_910ab894672f02::t_6eac387e200e3e 205
+src/memex/models.py
+  s_910ab894672f02::t_c248605f118c11 1-271
+tests/test_store.py
+  s_910ab894672f02::t_31d51817f296d2 1-69
+src/memex/factories.py
+  s_910ab894672f02::t_39ce3c5806e02c 1-11,13-36,38-93,95-97
+  s_910ab894672f02::t_24cfeb1f02b021 94
+  s_910ab894672f02::t_9463520ab3aa93 12
+  s_910ab894672f02::t_df9a6dc2cd0d97 37
+src/memex/_uuid.py
+  s_910ab894672f02::t_edb37694225471 1-14,16-22,24-62
+  s_910ab894672f02::t_1dfbe917f6470b 15,23
+src/memex/intent.py
+  s_910ab894672f02::t_c3be02b16e0864 1-318
+tests/test_bugfix_holes.py
+  s_910ab894672f02::t_faa8bc46ae33de 1-385
+PLAN.md
+  s_910ab894672f02::t_1b8e7d4394b088 7
+tests/test_reducer.py
+  s_910ab894672f02::t_513636f5aebd25 1-312
+tests/test_cross_graph_fields.py
+  s_910ab894672f02::t_b28b2901a543c7 1-157
+pyproject.toml
+  s_910ab894672f02::t_b6162f52c8e841 1-40
+  s_910ab894672f02::t_c5c1426b19be0a 41
+src/memex/errors.py
+  s_910ab894672f02::t_326cc3382097cc 1-51
+tests/test_bugfix_reid_ordering.py
+  s_910ab894672f02::t_e94b94b4b0b798 1-110
+tests/support.py
+  s_910ab894672f02::t_7dbb70f77c006c 1-47
+.gitignore
+  s_910ab894672f02::t_4a2525b67765b6 1-16
+tests/test_helpers.py
+  s_910ab894672f02::t_cf1df329a2e0b2 1-174
+src/memex/transplant.py
+  s_910ab894672f02::t_37d1a2d9cc79cf 1-324,327,329-362,365-370,373,375-409,412-417,420,422-463,466,469-480
+  s_910ab894672f02::t_052ef9c994ba2c 410-411
+  s_910ab894672f02::t_f4240e2c694dff 418-419,421
+  s_910ab894672f02::t_ae83d14884088e 371-372,374
+  s_910ab894672f02::t_dd198294c47ecc 325-326,328
+  s_910ab894672f02::t_82a5f6d0ddd223 363-364
+  s_910ab894672f02::t_5576880e5e8aed 464-465,467-468
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "982c736d149f0aaabfdd1d8931a510398891d156",
+  "prompts": {},
+  "sessions": {
+    "s_910ab894672f02": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "61766775-0510-4a4d-ba92-65a383003dcd",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "LZL0 <12474488+LZL0@users.noreply.github.com>"
+    }
+  }
+}
